@@ -15,11 +15,17 @@ USER            root
 
 # Updating the base system & Installing the required packages
 RUN             apt-get         update                                                                                      \
-      &&        apt-get         install  -y   apt-transport-https software-properties-common runit curl                     \
+      &&        apt-get         install  -y   apt-transport-https software-properties-common runit curl wget                \
       &&        curl      -L    https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh                \
       &&        apt-get         update                                                                                      \
       &&        mkdir           /etc/sv/td-agent     \
                                 /etc/sv/td-agent-ui
+
+# Installing the GELF gem for Fluentd
+RUN             /usr/sbin/td-agent-gem   install    gelf                                                                    \
+      &&        wget https://raw.githubusercontent.com/emsearcy/fluent-plugin-gelf/master/lib/fluent/plugin/out_gelf.rb     \
+      &&        mv      out_gelf.rb       /etc/td-agent/plugin/out_gelf.rb                                                  \
+      &&        chmod   755               /etc/td-agent/plugin/out_gelf.rb
 
 # Copy entrypoint.sh script
 COPY            entrypoint.sh   /entrypoint.sh
