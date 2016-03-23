@@ -13,16 +13,23 @@ ENV             home            /root
 WORKDIR         $home
 USER            root
 
-# Updating the base system & installing the packages
+# Updating the base system & Installing the required packages
 RUN             apt-get         update                                                                                      \
-      &&        apt-get         install  -y   apt-transport-https software-properties-common vim curl
-
-# Importing, Downloading & Insatalling Fluentd
-RUN             curl      -L    https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh                \
-      &&        apt-get         update
+      &&        apt-get         install  -y   apt-transport-https software-properties-common runit curl                     \
+      &&        curl      -L    https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh                \
+      &&        apt-get         update                                                                                      \
+      &&        mkdir           /etc/sv/td-agent     \
+                                /etc/sv/td-agent-ui
 
 # Copy entrypoint.sh script
 COPY            entrypoint.sh   /entrypoint.sh
+
+# Copy the svloggelfd binary file
+COPY            svloggelfd      /usr/bin/svloggelfd
+
+# Copying the RUNIT files
+COPY            td-agent        /etc/sv/td-agent
+COPY            td-agent-ui     /etc/sv/td-agent-ui
 
 # Cleaning the Docker Image
 RUN             apt-get   -y    clean                                                                                       \
@@ -30,7 +37,7 @@ RUN             apt-get   -y    clean                                           
       &&        rm        -rf   /var/cache/*
 
 # Mounting the Volume
-VOLUME          ["/etc/td-agent", "/var/log/td-agent"]
+VOLUME          ["/etc/td-agent", "/var/log/td-agent", "/etc/sv"]
 
 # Exposing the port
 EXPOSE          24224           9292
