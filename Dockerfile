@@ -24,9 +24,6 @@ RUN             apt-get         update                                          
 # Copy entrypoint.sh script
 COPY            entrypoint.sh   /entrypoint.sh
 
-# Copy the svloggelfd binary file
-COPY            svloggelfd      /usr/bin/svloggelfd
-
 # Copying the RUNIT files
 COPY            td-agent        /etc/sv/td-agent
 COPY            td-agent-ui     /etc/sv/td-agent-ui
