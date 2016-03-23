@@ -33,7 +33,7 @@ RUN             apt-get   -y    clean                                           
 VOLUME          ["/etc/td-agent", "/var/log/td-agent"]
 
 # Exposing the port
-EXPOSE          24224
+EXPOSE          24224           9292
 
 # CMD Insstruction
 CMD             ["/entrypoint.sh"]
