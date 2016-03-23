@@ -1,5 +1,8 @@
 #!/bin/sh
 exec  2>&1
 
-exec  /usr/sbin/td-agent-ui start
-exec  /opt/td-agent/embedded/bin/ruby  /usr/sbin/td-agent  --log /var/log/td-agent/td-agent.log
+# Updating the Service
+update-service   --add    /et/sv/td-agent     td-agent
+update-service   --add    /et/sv/td-agent-ui  td-agent-ui
+
+exec  /usr/bin/runsvdir -P /etc/sv
