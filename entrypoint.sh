@@ -1,4 +1,4 @@
 #!/bin/sh
-exec 2>&1
+exec  2>&1
 
-exec     /opt/td-agent/embedded/bin/ruby  /usr/sbin/td-agent  --log /var/log/td-agent/td-agent.log  --daemon /var/run/td-agent/td-agent.pid
+exec  /opt/td-agent/embedded/bin/ruby  /usr/sbin/td-agent  --log /var/log/td-agent/td-agent.log

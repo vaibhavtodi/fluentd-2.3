@@ -15,7 +15,7 @@ USER            root
 
 # Updating the base system & installing the packages
 RUN             apt-get         update                                                                                      \
-      &&        apt-get         install  -y   apt-transport-https software-properties-common vim
+      &&        apt-get         install  -y   apt-transport-https software-properties-common vim curl
 
 # Importing, Downloading & Insatalling Fluentd
 RUN             curl      -L    https://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh                \
@@ -31,6 +31,9 @@ RUN             apt-get   -y    clean                                           
 
 # Mounting the Volume
 VOLUME          ["/etc/td-agent", "/var/log/td-agent"]
+
+# Exposing the port
+EXPOSE          24224
 
 # CMD Insstruction
 CMD             ["/entrypoint.sh"]
